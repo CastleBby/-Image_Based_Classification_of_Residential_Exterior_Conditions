@@ -23,10 +23,19 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import argparse
+import random
 
 from src.dataset import get_dataloaders
 from src.model import get_model
 
+
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 def evaluate(model, loader, device):
     model.eval()
@@ -55,6 +64,7 @@ def evaluate(model, loader, device):
 
 
 def train(config="baseline", epochs=10):
+    set_seed(42)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_loader, val_loader, _, classes = get_dataloaders(config=config)
