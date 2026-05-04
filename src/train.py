@@ -27,6 +27,32 @@ from src.dataset import get_dataloaders
 from src.model import get_model
 
 
+def evaluate(model, loader, device):
+    model.eval()
+    correct = 0
+    total = 0
+    loss_total = 0
+    criterion = nn.CrossEntropyLoss()
+
+    with torch.no_grad():
+        for images, labels in loader:
+            images, labels = images.to(device), labels.to(device)
+
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+
+            loss_total += loss.item()
+
+            _, preds = torch.max(outputs, 1)
+            correct += (preds == labels).sum().item()
+            total += labels.size(0)
+
+    accuracy = correct / total
+    avg_loss = loss_total / len(loader)
+
+    return avg_loss, accuracy
+
+
 def train(config="baseline", epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -39,7 +65,7 @@ def train(config="baseline", epochs=10):
 
     for epoch in range(epochs):
         model.train()
-        total_loss = 0
+        train_loss = 0
 
         for images, labels in train_loader:
             images, labels = images.to(device), labels.to(device)
@@ -51,9 +77,16 @@ def train(config="baseline", epochs=10):
             loss.backward()
             optimizer.step()
 
-            total_loss += loss.item()
+            train_loss += loss.item()
+        # average loss 
+        train_loss /= len(train_loader)
 
-        print(f"Epoch {epoch+1}/{epochs}, Loss: {total_loss:.4f}")
+        val_loss, val_acc = evaluate(model, val_loader, device)
+
+        print(f"Epoch {epoch+1}/{epochs}")
+        print(f"Train Loss: {train_loss:.4f}")
+        print(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
+        print("-" * 40)
 
 
 if __name__ == "__main__":
