@@ -40,6 +40,7 @@ Labels are assigned using a structured scoring rubric based on:
 ---
 
 ## Project Structure
+```
 Image-based Classification of Residential Exterior Conditions/
 ├── data/
 │   ├── house_images/        # Original labeled images (by class)
@@ -78,7 +79,7 @@ Image-based Classification of Residential Exterior Conditions/
 │   ├── models/              # Saved model weights
 │   ├── plots/               # Loss/accuracy curves
 │   └── confusion_matrices/  # Evaluation results
-
+```
 ---
 
 ## Model  
