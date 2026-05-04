@@ -35,7 +35,9 @@ def get_transforms(config="baseline"):
     elif config == "synthetic":
         return transforms.Compose([
             transforms.Resize((224, 224)),
-            transforms.GaussianBlur(kernel_size=5),
+            transforms.RandomApply(
+                [transforms.GaussianBlur(kernel_size=5)],
+                p=0.5) # apply probabilistically
             transforms.ColorJitter(brightness=0.3, contrast=0.3),
             transforms.RandomGrayscale(p=0.2),
             transforms.ToTensor(),
@@ -55,7 +57,9 @@ def get_transforms(config="baseline"):
                 contrast=0.2,
                 saturation=0.2
             ),
-            transforms.GaussianBlur(kernel_size=5),
+            transforms.RandomApply(
+                [transforms.GaussianBlur(kernel_size=5)],
+                p=0.5)
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=[0.485, 0.456, 0.406],

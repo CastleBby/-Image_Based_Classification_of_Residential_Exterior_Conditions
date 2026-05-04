@@ -42,43 +42,33 @@ Labels are assigned using a structured scoring rubric based on:
 ## Project Structure
 ```
 Image-based Classification of Residential Exterior Conditions/
+project/
 ├── data/
-│   ├── house_images/        # Original labeled images (by class)
-│   │   ├── poor/
-│   │   ├── average/
-│   │   └── well_maintained/
-│   │
-│   ├── train/               # Training split
-│   │   ├── poor/
-│   │   ├── average/
-│   │   └── well_maintained/
-│   │
-│   ├── val/                 # Validation split
-│   │   ├── poor/
-│   │   ├── average/
-│   │   └── well_maintained/
-│   │
-│   ├── test/                # Test split
-│   │   ├── poor/
-│   │   ├── average/
-│   │   └── well_maintained/
-│   │
-│   └── labels.csv           # Ground truth labels
+│   ├── house_images/
+│   |    ├── train/
+│   |    ├── val/
+│   |    └── test/
+│   └── house_labels.csv
 │
 ├── src/
-│   ├── data_split.py        # Verifies dataset and creates train/val/test splits
-│   ├── dataset.py           # Data loading and transformations
-│   ├── model.py             # Pretrained model definition (MobileNetV2)
-│   ├── train.py             # Training pipeline
-│   └── evaluate.py          # (Optional) Evaluation and metrics
+│   ├── data_split.py        # dataset verification + splitting
+│   ├── dataset.py           # dataloaders + transforms
+|   ├── grading_rubric.py    # house scoring method in python
+│   ├── model.py             # model definition
+│   ├── train.py             # training + evaluation loop
 │
 ├── notebooks/
-│   └── data_cleaning.ipynb  # One-time data preprocessing and fixes
+│   └── data_cleaning.ipynb  # one time use for cleanign raw data
 │
-├── outputs/                 # Generated during experiments
-│   ├── models/              # Saved model weights
-│   ├── plots/               # Loss/accuracy curves
-│   └── confusion_matrices/  # Evaluation results
+├── outputs/
+│   ├── models/
+│   ├── plots/
+│   └── results/
+│
+├── README.md
+├── proposal.md
+├── proposal.pdf
+├── grading_rubric.md         # used to score houses
 ```
 ---
 
