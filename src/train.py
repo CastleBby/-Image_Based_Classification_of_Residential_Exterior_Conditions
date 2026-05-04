@@ -24,6 +24,7 @@ import torch.nn as nn
 import torch.optim as optim
 import argparse
 import random
+import numpy as np
 
 from src.dataset import get_dataloaders
 from src.model import get_model
