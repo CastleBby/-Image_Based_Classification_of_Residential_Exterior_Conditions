@@ -4,11 +4,21 @@ __pycache__/
 *.pyo
 *.pyd
 
+# Virtual environment
+venv/
 
 # Jupyter
 .ipynb_checkpoints/
 
-# OS / editor
+# OS
 .DS_Store
-Thumbs.db
-.vscode/
+
+# Data (DO NOT COMMIT DATASETS) (idk)
+# data/
+
+# Model outputs
+outputs/
+*.pth
+
+# Logs (optional)
+*.log

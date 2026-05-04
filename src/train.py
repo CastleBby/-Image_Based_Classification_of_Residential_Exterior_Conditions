@@ -38,12 +38,12 @@ def set_seed(seed=42):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-def evaluate(model, loader, device, criterion):
+def evaluate(model, loader, device):
     model.eval()
     correct = 0
     total = 0
     loss_total = 0
-    # criterion = nn.CrossEntropyLoss() removed 
+    criterion = nn.CrossEntropyLoss()
 
     with torch.no_grad():
         for images, labels in loader:
@@ -64,30 +64,16 @@ def evaluate(model, loader, device, criterion):
     return avg_loss, accuracy
 
 
-def train(config="baseline", epochs=20):
+def train(config="baseline", epochs=10):
     set_seed(42)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_loader, val_loader, _, classes = get_dataloaders(config=config)
-    
-    # class weights 
-    class_counts = [0] * len(classes)
-    for _, labels in train_loader:
-        for label in labels:
-            class_counts[label.item()] += 1
 
-    weights = 1.0 /torch.tensor(class_counts, dtype=torch.float)
-    weights = weights/weights.mean()
-
-    # pass the weights in
-    weights = weights.to(device) 
-
-    # model 
     model = get_model(num_classes=len(classes)).to(device)
 
-    criterion = nn.CrossEntropyLoss(weight=weights)
-    optimizer = optim.Adam(model.parameters(), lr=0.0003)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     # tracking metrics for plotting later
     train_losses = []
@@ -114,16 +100,14 @@ def train(config="baseline", epochs=20):
 
             train_loss += loss.item()
 
-        scheduler.step()
-
         # average training loss per epoch
         train_loss /= len(train_loader)
 
         # evaluate on validation set
-        val_loss, val_acc = evaluate(model, val_loader, device, criterion)
+        val_loss, val_acc = evaluate(model, val_loader, device)
 
+        # SAVE BEST MODEL ONLY
 
-        # save best model
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             os.makedirs("outputs/models", exist_ok=True)
@@ -138,6 +122,10 @@ def train(config="baseline", epochs=20):
         print(f"Train Loss: {train_loss:.4f}")
         print(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
         print("-" * 40)
+
+    # save model AFTER training completes
+    os.makedirs("outputs/models", exist_ok=True)
+    torch.save(model.state_dict(), f"outputs/models/{config}_model.pth")
 
     print(f"\nBest model saved to outputs/models/{config}_model.pth")
 
@@ -158,7 +146,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--epochs",
         type=int,
-        default=20,
+        default=10,
         help="Number of training epochs"
     )
 
