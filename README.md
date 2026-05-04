@@ -33,6 +33,15 @@ Labels are assigned using a structured scoring rubric based on:
 - Immediate street condition
 
 ---
+
+## AI Disclosure
+
+AI was utilized for the front end streamlit portion of this project as well as to answer the following questions:
+1. Where is the best source of house images that include the front yard, a bit of the street, and the overall landscape of the house?
+2. when saving an image based classification model is it best practice to store the last epoch or the best epoch and why? 
+3. When I implement weights on my model the resulting val accuracy and test accuracy are lower is that because I implemented weights wrong or is it because the dataset is too small and the boundaries are now being distorted, how can I systematically check?
+
+---
 ## HOW TO RUN:
 1. clone the repo
 ```
