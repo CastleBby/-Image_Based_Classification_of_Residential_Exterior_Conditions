@@ -43,7 +43,10 @@ Labels are assigned using a structured scoring rubric based on:
 
 ---
 ## HOW TO RUN:  
-
+python -m src.train --config baseline
+python -m src.train --config augment
+python -m src.train --config synthetic
+python -m src.train --config combined
 
 
 ---
