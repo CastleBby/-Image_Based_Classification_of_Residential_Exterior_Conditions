@@ -56,9 +56,9 @@ Each category will be scored from 0–2:
 - 2 = Good  
 
 Total score determines class label:
-- 0–3 → Poor  
-- 4–6 → Average  
-- 7–8 → Well-Maintained  
+- 0–3 = Poor  
+- 4–6 = Average  
+- 7–8 = Well-Maintained  
 
 This structured rubric ensures consistent and reproducible labeling.
 
