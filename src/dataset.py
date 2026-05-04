@@ -33,16 +33,17 @@ def get_transforms(config="baseline"):
         ])
 
     elif config == "synthetic":
-            return transforms.Compose([
+        return transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.GaussianBlur(kernel_size=5),
-            transforms.ColorJitter(brightness=0.3),
+            transforms.ColorJitter(brightness=0.3, contrast=0.3),
+            transforms.RandomGrayscale(p=0.2),
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=[0.485, 0.456, 0.406],
                 std=[0.229, 0.224, 0.225]
             )
-    ])
+        ])
 
     elif config == "combined":
         return transforms.Compose([
@@ -60,7 +61,7 @@ def get_transforms(config="baseline"):
                 mean=[0.485, 0.456, 0.406],
                 std=[0.229, 0.224, 0.225]
             )
-    ])
+        ])
 
     else:
         raise ValueError(f"Unknown config: {config}")
