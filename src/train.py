@@ -23,9 +23,12 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import argparse
+import os 
+os.makedirs("outputs/models", exist_ok=True)
 
 from src.dataset import get_dataloaders
 from src.model import get_model
+
 
 
 def evaluate(model, loader, device):
@@ -55,6 +58,11 @@ def evaluate(model, loader, device):
 
 
 def train(config="baseline", epochs=10):
+    # to store 
+    train_losses = []
+    val_losses = []
+    val_accuracies = []
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_loader, val_loader, _, classes = get_dataloaders(config=config)
@@ -64,6 +72,9 @@ def train(config="baseline", epochs=10):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+    # print for debug 
+    print(f"\nRunning config: {config}\n")
+    
     for epoch in range(epochs):
         model.train()
         train_loss = 0
