@@ -35,7 +35,7 @@ def load_csv(csv_path):
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"labels.csv not found at {csv_path}")
     df = pd.read_csv(csv_path)
-    required_cols = ["image_number", "label"]
+    required_cols = ["image_name", "label"]
     for col in required_cols:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
@@ -57,7 +57,7 @@ def get_images_from_folders(image_dir):
 
 
 def verify_dataset(df, folder_images):
-    csv_images = set(df["image_number"])
+    csv_images = set(df["image_name"])
     folder_image_set = set()
 
     for cls, imgs in folder_images.items():
@@ -90,7 +90,7 @@ def group_by_class(df):
     class_map = defaultdict(list)
 
     for _, row in df.iterrows():
-        class_map[row["label"]].append(row["image_number"])
+        class_map[row["label"]].append(row["image_name"])
 
     return class_map
 
