@@ -33,6 +33,11 @@ Labels are assigned using a structured scoring rubric based on:
 - Immediate street condition
 
 ---
+## HOW TO RUN:  
+
+
+
+---
 
 ## Project Structure
 
@@ -63,3 +68,24 @@ The model is evaluated under four configurations:
 
 4. Augmentation + Synthetic  
    Combination of both methods  
+
+
+---
+
+## Evaluation
+
+For each configuration, the following are analyzed:  
+- Training and validation loss curves
+- Accuracy over epochs
+- Confusion matrix on the test set
+A comparative analysis is conducted between the baseline and the best-performing configuration.
+
+---
+## Robustness Testing
+
+The final model is evaluated under:
+- Image blur
+- Noise
+- Lighting variation
+- Partial occlusion
+This tests how well the model generalizes to real-world variability.
