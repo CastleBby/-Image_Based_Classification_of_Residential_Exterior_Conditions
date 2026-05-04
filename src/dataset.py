@@ -37,7 +37,7 @@ def get_transforms(config="baseline"):
             transforms.Resize((224, 224)),
             transforms.RandomApply(
                 [transforms.GaussianBlur(kernel_size=5)],
-                p=0.5) # apply probabilistically
+                p=0.5), # apply probabilistically
             transforms.ColorJitter(brightness=0.3, contrast=0.3),
             transforms.RandomGrayscale(p=0.2),
             transforms.ToTensor(),
@@ -59,7 +59,7 @@ def get_transforms(config="baseline"):
             ),
             transforms.RandomApply(
                 [transforms.GaussianBlur(kernel_size=5)],
-                p=0.5)
+                p=0.5),
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=[0.485, 0.456, 0.406],
