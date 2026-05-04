@@ -38,7 +38,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-def evaluate(model, loader, device):
+def evaluate(model, loader, device, criterion):
     model.eval()
     correct = 0
     total = 0
@@ -64,16 +64,26 @@ def evaluate(model, loader, device):
     return avg_loss, accuracy
 
 
-def train(config="baseline", epochs=10):
+def train(config="baseline", epochs=20):
     set_seed(42)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_loader, val_loader, _, classes = get_dataloaders(config=config)
+    
+    # class weights 
+    class_counts = [0] * len(classes)
+    for _, labels in train_loader:
+        for label in labels:
+            class_counts[label.item()] += 1
+
+    weights = 1.0 /torch.tensor(class_counts, dtype=torch.float)
+    weights = weights/weights.mean()
 
     model = get_model(num_classes=len(classes)).to(device)
 
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    # pass the weights in 
+    criterion = nn.CrossEntropyLoss(weight=weights.to(device))
+    optimizer = optim.Adam(model.parameters(), lr=0.0003)
 
     # tracking metrics for plotting later
     train_losses = []
@@ -102,7 +112,7 @@ def train(config="baseline", epochs=10):
         train_loss /= len(train_loader)
 
         # evaluate on validation set
-        val_loss, val_acc = evaluate(model, val_loader, device)
+        val_loss, val_acc = evaluate(model, val_loader, device, criterion)
 
         # store metrics
         train_losses.append(train_loss)

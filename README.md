@@ -16,6 +16,15 @@ Assessing residential property condition is often subjective and inconsistent. T
 
 ---
 
+## AI Disclosure
+
+AI was utilized for the front end streamlit portion of this project as well as to answer the following questions:
+1. 
+2. 
+3. 
+
+---
+
 ## Dataset
 
 The dataset consists of manually collected images from:

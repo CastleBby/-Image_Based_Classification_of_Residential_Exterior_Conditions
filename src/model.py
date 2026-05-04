@@ -23,7 +23,7 @@ from torchvision import models
 
 
 def get_model(num_classes=3):
-    model = models.mobilenet_v2(pretrained=True)
+    model = models.mobilenet_v2(pretrained="DEFAULT")
 
     # freeze feature extractor
     for param in model.features.parameters():
