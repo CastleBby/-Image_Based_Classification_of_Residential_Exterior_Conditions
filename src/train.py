@@ -22,6 +22,7 @@ Outputs:
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import argparse
 
 from src.dataset import get_dataloaders
 from src.model import get_model
@@ -90,4 +91,23 @@ def train(config="baseline", epochs=10):
 
 
 if __name__ == "__main__":
-    train(config="baseline")
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="baseline",
+        choices=["baseline", "augment", "synthetic", "combined"],
+        help="Training configuration"
+    )
+
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=10,
+        help="Number of training epochs"
+    )
+
+    args = parser.parse_args()
+
+    train(config=args.config, epochs=args.epochs)
