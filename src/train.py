@@ -80,6 +80,8 @@ def train(config="baseline", epochs=10):
     val_losses = []
     val_accuracies = []
 
+    best_val_acc = 0
+
     print(f"\nRunning config: {config}\n")
 
     for epoch in range(epochs):
@@ -104,6 +106,13 @@ def train(config="baseline", epochs=10):
         # evaluate on validation set
         val_loss, val_acc = evaluate(model, val_loader, device)
 
+        # SAVE BEST MODEL ONLY
+
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            os.makedirs("outputs/models", exist_ok=True)
+            torch.save(model.state_dict(), f"outputs/models/{config}_model.pth")
+
         # store metrics
         train_losses.append(train_loss)
         val_losses.append(val_loss)
@@ -118,7 +127,7 @@ def train(config="baseline", epochs=10):
     os.makedirs("outputs/models", exist_ok=True)
     torch.save(model.state_dict(), f"outputs/models/{config}_model.pth")
 
-    print(f"\nModel saved to outputs/models/{config}_model.pth")
+    print(f"\nBest model saved to outputs/models/{config}_model.pth")
 
     return train_losses, val_losses, val_accuracies
 

@@ -33,9 +33,46 @@ Labels are assigned using a structured scoring rubric based on:
 - Immediate street condition
 
 ---
-## HOW TO RUN:  
-
-
+## HOW TO RUN:
+1. clone the repo
+```
+git clone https://github.com/CastleBby/-Image_Based_Classification_of_Residential_Exterior_Conditions.git
+```
+2. cd to root 
+```
+cd -Image_Based_Classification_of_Residential_Exterior_Conditions
+```
+3. activate the venv 
+```
+source venv/bin/activate
+```
+4. install dependencies 
+```
+pip install -r requirements.txt
+```
+5. run the data_split.py 
+```
+python -m src.data_split
+```
+6. generate the synthetic and combined data
+```
+python -m src.generate_data
+```
+7. train the model on each configurations 
+```
+python -m src.train --config baseline --epochs 20
+python -m src.train --config augment --epochs 20
+python -m src.train --config synthetic --epochs 20
+python -m src.train --config combined --epochs 20
+```
+8. go through the ipynb to evaluate the model and test the robustness
+- test accuracy 
+- confusion matrices 
+- robustness results
+9. run the frontend demo 
+```
+streamlit run app.py
+```
 
 ---
 
